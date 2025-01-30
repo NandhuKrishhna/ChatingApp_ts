@@ -1,11 +1,42 @@
-import { Camera, Mail, User } from "lucide-react"
-import { useSelector } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-
+import { useState } from "react";
+import { Camera, Mail, User } from "lucide-react";
+import { useUpdateProfileMutation } from "../redux/api/authApi";
+import { setUpdatingProfile } from "../redux/slices/authSlice";
+import toast from "react-hot-toast";
 const ProfilePage = () => {
- const authUser = useSelector((state:RootState)=> state.auth.authUser)
- const {isUpdatingProfile} = useSelector((state:RootState)=> state.auth)
+ const authUser = useSelector((state:RootState)=> state.auth.authUser);
+ const {isUpdatingProfile} = useSelector((state:RootState)=> state.auth);
+ 
+ const [selectedImg, setSelectedImg] =  useState("") 
+ const dispatch = useDispatch();
+const [updateProfile ] = useUpdateProfileMutation();
 
+const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = async () => {
+    const base64Image = reader.result as string;
+    setSelectedImg(base64Image);
+    dispatch(setUpdatingProfile(true));
+
+    try {
+      await updateProfile({ profilePic: base64Image }).unwrap();
+      toast.success("Profile picture updated successfully!");
+    } catch (error: any) {
+      console.error("Profile update error:", error);
+      toast.error(error?.data?.message || "Failed to update profile");
+    } finally {
+      dispatch(setUpdatingProfile(false));
+    }
+  };
+};
 
 
 
@@ -59,7 +90,7 @@ const ProfilePage = () => {
                 <User className="w-4 h-4" />
                 Full Name
               </div>
-              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.fullName}</p>
+              <p className="px-4 py-2.5 bg-base-200 rounded-lg border">{authUser?.name}</p>
             </div>
 
             <div className="space-y-1.5">
@@ -76,7 +107,8 @@ const ProfilePage = () => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between py-2 border-b border-zinc-700">
                 <span>Member Since</span>
-                <span>{authUser.createdAt?.split("T")[0]}</span>
+                <span>{authUser?.createdAt ? new Date(authUser.createdAt).toDateString() : "N/A"}</span>
+
               </div>
               <div className="flex items-center justify-between py-2">
                 <span>Account Status</span>

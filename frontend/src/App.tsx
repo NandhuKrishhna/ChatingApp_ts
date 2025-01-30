@@ -8,9 +8,12 @@ import Navbar from "./components/Navbar"
 import { useAuth } from "./hooks/useAuth"
 import { Loader } from "lucide-react"
 import { Toaster } from "react-hot-toast"
+import { useSelector } from "react-redux"
+import { RootState } from "./redux/store"
 
 const App = () => {
   const { authUser, isLoading } = useAuth(); 
+  const theme = useSelector((state :RootState) => state.theme.theme);
 
   if (isLoading) {
  
@@ -21,7 +24,7 @@ const App = () => {
     );
   }
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar />
       <Routes>
         <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />

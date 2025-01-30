@@ -1,7 +1,8 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSignupMutation } from "../redux/api/authApi";
 import { setAuthUser, setSigningUp } from "../redux/slices/authSlice";
 import toast from "react-hot-toast";
+import { RootState } from "../redux/store";
 
 
 interface SignUpFormData {
@@ -12,10 +13,12 @@ interface SignUpFormData {
 export const UseSignUpActions = () => {
     const dispatch = useDispatch();
     const [signup ] = useSignupMutation();
-    // console.log(error)
+    const isSigningUp = useSelector((state:RootState)=> state.auth.isSigningUp)
+    console.log("isSigned In hook",isSigningUp)
     const handleSignUp = async (formData: SignUpFormData) => {
+        console.log("Dispatching setSigningUp(true)");
+        dispatch(setSigningUp(true));
         try {
-            dispatch(setSigningUp(true));
            const res =   await signup(formData).unwrap();
             dispatch(setAuthUser(res));
             toast.success("Signed Up Successfully");
@@ -27,6 +30,7 @@ export const UseSignUpActions = () => {
                 console.error("Validation errors:", error.data.errors);
             }
         } finally {
+            console.log("Dispatching setSigningUp(false)");
             dispatch(setSigningUp(false));
         }
     }

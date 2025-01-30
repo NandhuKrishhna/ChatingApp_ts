@@ -9,12 +9,13 @@ import errorHandler from "./interface/middlewares/errorHandler";
 import cookieParser from "cookie-parser";
 import messageRouter from "./interface/routes/message.routes";
 import cors from "cors";
-const app = express();
+import { app, server } from "./config/socket";
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     origin:APP_ORIGIN,
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   }))
 app.use("/api/auth", authRouter);
@@ -22,7 +23,7 @@ app.use("/api/messages", messageRouter);
 
 app.use(errorHandler);
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
 console.log(`Server is running on port ${PORT}`);
 await connectToDataBase()
 });

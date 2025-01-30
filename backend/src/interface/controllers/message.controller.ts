@@ -24,8 +24,8 @@ export class MessageController {
     getUsersForSidebarHandler = catchErrors(async(req : AuthenticatedRequest, res : Response)=>{
     const loggedInUserId = req.user._id;
     console.log("loggedInUserId", loggedInUserId);
-     const filteredUsers = await this.authUseCase.getFilteredUsers(loggedInUserId);
-     res.status(200).json(filteredUsers);
+     const users = await this.authUseCase.getFilteredUsers(loggedInUserId);
+     res.status(200).json(users);
     })
 
     getMessagesHandler = catchErrors(async(req : AuthenticatedRequest, res : Response)=>{

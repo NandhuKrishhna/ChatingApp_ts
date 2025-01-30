@@ -9,7 +9,7 @@ export interface UserDocument extends Document{
     createdAt:Date;
     updatedAt:Date;
     profilePic?:string;
-    omitPassword() : Pick<UserDocument, '_id' |'name' | 'email'>;
+    omitPassword() : Pick<UserDocument, '_id' |'name' | 'email' | 'createdAt' | 'updatedAt' | 'profilePic'>;
 
 };
 
@@ -18,6 +18,7 @@ const UserSchema : Schema = new Schema<UserDocument>({
     name:{type:String, required:true},
     email:{type:String, required:true, unique:true},
     password:{type:String, required:true},
+    profilePic:{type:String}
     
 },{timestamps:true});
 

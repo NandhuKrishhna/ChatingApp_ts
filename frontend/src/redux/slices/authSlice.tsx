@@ -1,59 +1,64 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-// const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:6000" : "http://localhost:6000";
-
 interface AuthUser {
-    id: string;
+    _id: string;
     name: string;
     email: string;
-  }
-  
-  interface AuthState {
+    createdAt: Date;
+    updatedAt: Date;
+    profilePic: string;
+    token: string;
+}
+
+interface AuthState {
     authUser: AuthUser | null;
     isCheckingAuth: boolean;
     isSigningUp: boolean;
     isLoggingIn: boolean;
     isUpdatingProfile: boolean;
-  }
+    onlineUsers: string[];
+}
 
-
-  const initialState: AuthState = {
+const initialState: AuthState = {
     authUser: null,
     isCheckingAuth: true,
     isSigningUp: false,
     isLoggingIn: false,
     isUpdatingProfile: false,
-  };
-  
-  export const authSlice = createSlice({
-    name :"auth",
+    onlineUsers: []
+};
+
+export const authSlice = createSlice({
+    name: "auth",
     initialState,
     reducers: {
-        setAuthUser: (state : AuthState, action: PayloadAction<AuthUser | null>) => {
-          state.authUser = action.payload;
+        setAuthUser: (state, action: PayloadAction<AuthUser | null>) => {
+            state.authUser = action.payload;
         },
-        setCheckingAuth: (state : AuthState, action: PayloadAction<boolean>) => {
-          state.isCheckingAuth = action.payload;
+        setCheckingAuth: (state, action: PayloadAction<boolean>) => {
+            state.isCheckingAuth = action.payload;
         },
-        setSigningUp: (state : AuthState, action: PayloadAction<boolean>) => {
-          state.isSigningUp = action.payload;
+        setSigningUp: (state, action: PayloadAction<boolean>) => {
+            state.isSigningUp = action.payload;
         },
-        setLoggingIn: (state : AuthState, action: PayloadAction<boolean>) => {
-          state.isLoggingIn = action.payload;
+        setLoggingIn: (state, action: PayloadAction<boolean>) => {
+            state.isLoggingIn = action.payload;
         },
-        setUpdatingProfile: (state : AuthState, action: PayloadAction<boolean>) => {
-          state.isUpdatingProfile = action.payload;
+        setUpdatingProfile: (state, action: PayloadAction<boolean>) => {
+            state.isUpdatingProfile = action.payload;
         }
     }
-  });
+});
 
-
-  export const {
+export const {
     setAuthUser,
     setCheckingAuth,
     setSigningUp,
     setLoggingIn,
-  } = authSlice.actions;
-  export const selectAuthUser = (state: RootState) => state.auth.authUser;
-  export default authSlice.reducer;
+    setUpdatingProfile
+} = authSlice.actions;
+
+export const selectAuthUser = (state: RootState) => state.auth.authUser;
+
+export default authSlice.reducer;

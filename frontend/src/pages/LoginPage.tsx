@@ -12,11 +12,12 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-  const {loginHandler} = useLogin()
-  const isLoggingIn  = useSelector((state:RootState)=> state.auth.isLoggingIn)
+  const { loginHandler } = useLogin();
+  const isLoggingIn = useSelector((state: RootState) => state.auth.isLoggingIn);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    loginHandler(formData);
+      e.preventDefault();
+      loginHandler(formData);
   };
 
   return (

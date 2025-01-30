@@ -11,7 +11,7 @@ const defaults: SignOptions = { audience: ["user"] };
 
 export const accessTokenOptions: SignOptionsAndSecret = { expiresIn: "15m", secret: JWT_SECRET };
 export const refreshTokenSignOptions: SignOptionsAndSecret = { expiresIn: "30d", secret: JWT_REFRESH_SECRET };
-export const resetTokenOptions : SignOptionsAndSecret = { expiresIn: "10m", secret: JWT_SECRET };
+export const resetTokenOptions : SignOptionsAndSecret = { expiresIn: "10d", secret: JWT_SECRET };
 
 
 export const signToken = (payload: AccessTokenPayload | RefreshTokenPayload, options?: SignOptionsAndSecret) => {
